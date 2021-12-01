@@ -1,16 +1,12 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.NUMERIC_STD.ALL;
+use work.common.all;
 
 entity fsm is
-	generic(cifras	:	integer := 2);
-	
-	type int_vector is array(0 to 2*cifras - 1) of integer;
-	type states_t is (HOLA, NUM1, NUM2, CHECK, BIEN, ERROR, PR1, PR2);
-	
 	port (
 		RESET_N   : in  std_logic; --Boton RESET
-		CLK       : in  std_logic; --SeÃ±al de reloj
+		CLK       : in  std_logic; --Señal de reloj
 		OK		  : in  std_logic; --Pulsador OK
 		NUM		  : in  integer; --Numero entrante desde counter
 		STATE	  : out states_t; --Estado actual de la fsm
@@ -19,7 +15,7 @@ entity fsm is
 end fsm;
 
 architecture behavioral of fsm is
-	signal	current_state	:	 states_t	:=	HOLA;
+	signal	current_state	:	 states_t;
 	signal	next_state		:	 states_t;
 	
 	signal	n1_p	:	integer	:=	0; --Num1 programado
@@ -28,7 +24,7 @@ architecture behavioral of fsm is
 	signal	n2	:	integer	:=	0; --Num2 actual
   
 begin
-	state_register: process (RESET, CLK)
+	state_register: process (RESET_N, CLK)
 	begin
 		if RESET_N = '0' then
 			current_state <= HOLA;
@@ -47,9 +43,9 @@ begin
 				next_state <= NUM1;
 			end if;
 		when NUM1 => --Primer numero
-			if OK = '1' then  
+			if OK = '1' then
+			    next_state <= NUM2;  
 				n1 <= NUM;
-				next_state <= NUM2;
 			end if;
 		when NUM2 => --Segundo numero
 			if OK = '1' then   
