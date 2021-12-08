@@ -65,4 +65,4 @@ BEGIN
 	Num3<="0010010"; --2
 	Num4<="0000110"; --3 
 		
-end Multiplexor;
+end multiplexor;
