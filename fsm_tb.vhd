@@ -1,6 +1,6 @@
-library IEEE;
-use IEEE.std_logic_1164.all;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use work.common.all;
 
 entity fsm_tb is
@@ -10,8 +10,8 @@ architecture behavioral of fsm_tb is
 	-- Component Declaration for the Unit Under Test (UUT)
 	component fsm
 	port (
-		RESET_N   : in  std_logic; --Boton RESET
 		CLK       : in  std_logic; --Señal de reloj
+		RESET_N   : in  std_logic; --Boton RESET
 		OK		  : in  std_logic; --Pulsador OK
 		NUM		  : in  integer; --Numero entrante desde counter
 		STATE	  : out states_t; --Estado actual de la fsm
@@ -37,11 +37,11 @@ begin
 	uut: fsm
 	port map (
 		RESET_N => RESET_N,
-		CLK => CLK,
-		OK => OK,
-		NUM => NUM,
-		STATE => STATE,
-		REG => REG
+		CLK 	=> CLK,
+		OK 		=> OK,
+		NUM 	=> NUM,
+		STATE 	=> STATE,
+		REG 	=> REG
     );
 
 	-- Clock process definitions
