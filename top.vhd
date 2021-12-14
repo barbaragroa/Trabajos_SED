@@ -52,7 +52,12 @@ architecture structural of top is
     end component; 
     component decod
         port ( --Decodificador displays
-			
+			CLK 	: in  std_logic; --Señal de reloj+
+			AN 		: out std_logic_vector(3 downto 0) --Anodos displays
+			SEGMENTS: out std_logic_vector(7 downto 0); --Catodos displays		
+			NUM		: in integer; --Numero entrante desde counter
+			STATE	: in states_t; --Estado de la FSM
+			REG 	: in int_vector; --(n1, n2, n1_p, n2_p)
 		);
     end component; 
 	
@@ -61,6 +66,7 @@ architecture structural of top is
 	signal NUM		   : integer;
 	signal STATE	   : states_t;
 	signal REG 		   : int_vector;
+	signal SEGMENTS	   : std_logic_vector(7 downto 0);
     
 begin
 
@@ -70,6 +76,15 @@ maquinaestados:	fsm 		port map (CLK100MHZ, CPU_RESETN, EDGE1, NUM, STATE, REG);
 synchrnzr2: 	synchrnzr 	port map (CLK100MHZ, BTNU, SYNC2); 
 edgedtctr2:   	edgedtctr 	port map (CLK100MHZ, SYNC2, EDGE2);
 contador:		counter		port map (CLK100MHZ, CPU_RESETN, EDGE2, NUM);
-decodificador:	decod		port map (
+decodificador:	decod		port map (CLK100MHZ, AN, SEGMENTS, NUM, STATE, REG);
+
+CA <= SEGMENTS(7);
+CB <= SEGMENTS(6);
+CC <= SEGMENTS(5);
+CD <= SEGMENTS(4);
+CE <= SEGMENTS(3);
+CF <= SEGMENTS(2);
+CG <= SEGMENTS(1);
+DP <= SEGMENTS(0);
 
 end architecture structural;
