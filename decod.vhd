@@ -4,7 +4,7 @@ USE ieee.std_logic_arith.ALL;
 USE ieee.std_logic_unsigned.ALL;
 use work.common.all;
 
-ENTITY decoder IS
+ENTITY decod IS
 	PORT (
 		CLK       : IN std_logic;                             --Estado de nuestro reloj interno.
 		AN        : OUT std_logic_vector(3 DOWNTO 0);         --Número de displays en este caso pongo 4.   
@@ -13,22 +13,22 @@ ENTITY decoder IS
 		STATE	  : IN states_t;                              --Estado actual de la fsm
 		REG 	  : IN int_vector                             --(n1, n2, n1_p, n2_p)    
 	);
-END ENTITY decoder;
+END ENTITY decod;
 
-ARCHITECTURE multiplexor OF decoder IS (la arquitectura es un poco freestyle pero asi se podrá adaptar mejor)
+ARCHITECTURE multiplexor OF decod IS (la arquitectura es un poco freestyle pero asi se podrá adaptar mejor)
 
-	signal Cuenta              : integer range 0 to 1000000;               
+	signal Cuenta              : integer range 0 to 1000000 := 0;               
 	signal Seleccion           : std_logic_vector(1 DOWNTO 0) : ="00"; --palde señales que usaré luego que alternaran entre displays
 	signal Mostrar             : std_logic_vector(3 DOWNTO 0) : ="0000"; --Ambos inicializados a 0.
 	signal Num1,Num2,Num3,Num4 : std_logic_vector(7 DOWNTO 0); --Aquí igual hay que cambiarlo al formato de vector jusjas
 
 
 BEGIN
-	Conteo_Clk: process(CLK)       -- proceso de reloj (a lo mejor tienes tu una hecha ya probablemente pero cualquier cosa vale se puede apañar)
+	Conteo_Clk: process(CLK)       -- proceso de reloj
 	begin
 		if rising_edge(CLK) then
 		   if Cuenta < 100000 then
-			Cuenta <= Cuenta+1;
+			Cuenta <= Cuenta + 1;
 		   else
 			Seleccion <= Seleccion + 1;
 			Cuenta <= 0;
@@ -36,7 +36,7 @@ BEGIN
 		end if;	
 	end process;
 
-	Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los displays (muy resumido)
+	Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los displays
 	begin
 		case Seleccion is 	           --Cuando Cuenta llega a 100k (por reloj) aumenta Seleccion y da un valor a Mostrar
 			when "00" => 		   --En cada valor de Mostrar se mostrará el numero ya que se vuelca a Segmentos.
@@ -60,15 +60,13 @@ BEGIN
 			when "1000" =>
 				SEGMENTS <= Num3; --3
 			when others =>
-				SEGMENTS <= "11111110"; --por poner algo pero se apagaria todo el display
+				SEGMENTS <= "11111111";
 		end case;
 	end process;
 
 
 Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los displays (muy resumido)
 	begin
---  type states_t is (HOLA, NUM1, NUM2, CHECK, BIEN, ERROR, PR1, PR2);
--- PON QUE APA>GUE Los que no usas crack
 		case STATE is 	          
 			when HOLA => 		 
 				Num4 <=	"10010001" --Ultimo bit se refiere a la coma
@@ -88,7 +86,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011110" WHEN 7,
 							"00000000" WHEN 8,
 							"00001000" WHEN 9,
-							"11111100" WHEN others;
+							"11111111" WHEN others;
 				WITH REG(1) SELECT
 					Num2 <= 	"00000011" WHEN 0,
 							"10011111" WHEN 1,
@@ -100,7 +98,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011111" WHEN 7,
 							"00000001" WHEN 8,
 							"00001001" WHEN 9,
-							"11111101" WHEN others;
+							"11111111" WHEN others;
 					Num1 <= "11111111"	
 					Num0 <=	"11111111"
 
@@ -118,7 +116,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011111" WHEN 7,
 							"00000001" WHEN 8,
 							"00001001" WHEN 9,
-							"11111101" WHEN others;
+							"11111111" WHEN others;
 				WITH NUM SELECT
 					Num2 <= 	"00000010" WHEN 0,
 							"10011110" WHEN 1,
@@ -130,7 +128,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011110" WHEN 7,
 							"00000000" WHEN 8,
 							"00001000" WHEN 9,
-							"11111100" WHEN others;
+							"11111111" WHEN others;
 					Num1 <= "11111111"	
 					Num0 <=	"11111111"
 
@@ -162,7 +160,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011110" WHEN 7,
 							"00000000" WHEN 8,
 							"00001000" WHEN 9,
-							"11111100" WHEN others;
+							"11111111" WHEN others;
 				WITH REG(3) SELECT
 					Num2 <= 	"00000011" WHEN 0,
 							"10011111" WHEN 1,
@@ -174,7 +172,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"00011111" WHEN 7,
 							"00000001" WHEN 8,
 							"00001001" WHEN 9,
-							"11111101" WHEN others;
+							"11111111" WHEN others;
 	
 					Num1 <= "11111111"	
 					Num0 <=	"11111111"
@@ -191,7 +189,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"0001111" WHEN 7,
 							"0000000" WHEN 8,
 							"0000100" WHEN 9,
-							"1111110" WHEN others;
+							"1111111" WHEN others;
 
 	
 				Num0 <=	"11111111"
@@ -206,7 +204,7 @@ Mostrar_Displays: process(Seleccion) --Con estas dos funciones intercalas los di
 							"0001111" WHEN 7,
 							"0000000" WHEN 8,
 							"0000100" WHEN 9,
-							"1111110" WHEN others;
+							"1111111" WHEN others;
 					Num1 <= "11111111"	
 					Num0 <=	"11111111"
 		
