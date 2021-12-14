@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
-use work.common.all
+use work.common.all;
 
 entity decod_tb is
 end decod_tb;
@@ -11,17 +11,17 @@ architecture behavioral of decod_tb is
 -- Component Declaration for the Unit Under Test (UUT)
 	component decod
 	port (
-		CLK 	: in  std_logic; --SeÃ±al de reloj+
-		AN 		: out std_logic_vector(3 downto 0) --Anodos displays
+		CLK 	: in  std_logic; --Señal de reloj
+		AN 		: out std_logic_vector(3 downto 0); --Anodos displays
 		SEGMENTS: out std_logic_vector(7 downto 0); --Catodos displays		
 		NUM		: in integer; --Numero entrante desde counter
 		STATE	: in states_t; --Estado de la FSM
-		REG 	: in int_vector; --(n1, n2, n1_p, n2_p)
+		REG 	: in int_vector --(n1, n2, n1_p, n2_p)
 	);
 	end component;
 
 	--Inputs
-	signal CLK  	:	std_logic; --SeÃ±al de reloj
+	signal CLK  	:	std_logic; --Señal de reloj
 	signal STATE	:   states_t; --Estado de la FSM
 	signal REG 		:   int_vector; --(n1, n2, n1_p, n2_p)
 	signal NUM		:	integer; --Numero entrante desde counter
@@ -37,12 +37,12 @@ begin
 	-- Instantiate the Unit Under Test (UUT)
 	uut: decod
 	port map (
-		CLK 	 => CLK;
-		AN 		 => AN
-		SEGMENTS => SEGMENTS;
-		NUM		 => NUM;
-		STATE	 => STATE;
-		REG 	 => REG;
+		CLK 	 => CLK,
+		AN 		 => AN,
+		SEGMENTS => SEGMENTS,
+		NUM		 => NUM,
+		STATE	 => STATE,
+		REG 	 => REG
     );
 
 	-- Clock process definitions
