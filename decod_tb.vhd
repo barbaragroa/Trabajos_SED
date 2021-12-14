@@ -46,7 +46,7 @@ begin
     );
 
 	-- Clock process definitions
-	clk_process :process
+	clk_process: process
 	begin
 		clk <= '0';
 		wait for 0.5 * period;
@@ -58,15 +58,15 @@ begin
 	stim_proc: process
 	begin
 	
-		REG <= (1=>4, 0=>0, 3=>4, 2=>0);
+		REG <= (0=>4, 1=>0, 2=>4, 3=>0);
 		STATE <= HOLA;
-		wait for period;
+		wait for 500*period;
 		
 		
 		assert AN="0001"
 			report "[FAIL]: Anodo A"
 			severity failure;
-		assert SEGMENTS="10010001"
+		assert SEGMENTS="00010001"
 			report "[FAIL]: Catodos A"
 			severity failure;
 			
@@ -74,7 +74,7 @@ begin
 		assert AN="0010"
 			report "[FAIL]: Anodo L"
 			severity failure;			
-		assert SEGMENTS="00000011"
+		assert SEGMENTS="11100011"
 			report "[FAIL]: Catodos L"
 			severity failure;
 
@@ -82,7 +82,7 @@ begin
 		assert AN="0100"
 			report "[FAIL]: Anodo O"
 			severity failure;
-		assert SEGMENTS="11100011"
+		assert SEGMENTS="00000011"
 			report "[FAIL]: Catodos O"
 			severity failure;
 			
@@ -90,14 +90,14 @@ begin
 		assert AN="1000"
 			report "[FAIL]: Anodo H"
 			severity failure;
-		assert SEGMENTS="00010001"
+		assert SEGMENTS="10010001"
 			report "[FAIL]: Catodos H"
 			severity failure;
 			
 		
 		NUM <= 4;
 		STATE <= NUM1;
-		wait for period;
+		wait for 1000*period;
 		
 		
 		assert AN="0001"
@@ -134,7 +134,7 @@ begin
 		
 		NUM <= 0;
 		STATE <= NUM2;
-		wait for period;
+		wait for 1000*period;
 		
 		
 		assert AN="0001"
@@ -170,7 +170,7 @@ begin
 		
 		
 		STATE <= CHECK;
-		wait for period;
+		wait for 1000*period;
 		
 		
 		assert AN="0001"
@@ -206,13 +206,13 @@ begin
 		
 		
 		STATE <= ERROR;
-		wait for period;
+		wait for 1000*period;
 		
 		
 		assert AN="0001"
 			report "[FAIL]: Anodo 0 Error"
 			severity failure;
-		assert SEGMENTS="01100001"
+		assert SEGMENTS="11000101"
 			report "[FAIL]: Catodos 0 Error"
 			severity failure;
 			
@@ -236,7 +236,7 @@ begin
 		assert AN="1000"
 			report "[FAIL]: Anodo 3 Error"
 			severity failure;
-		assert SEGMENTS="11000101"
+		assert SEGMENTS="01100001"
 			report "[FAIL]: Catodos 3 Error"
 			severity failure;
 		
