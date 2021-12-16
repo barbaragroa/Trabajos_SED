@@ -25,7 +25,7 @@ begin
 	process(CLK)
 	begin
 		if rising_edge(CLK) then
-		   if Cuenta < 1000 then
+		   if Cuenta < 100000 then
 			Cuenta <= Cuenta + 1;
 		   else
 			Seleccion <= std_logic_vector(to_unsigned(to_integer(unsigned(Seleccion)) + 1, 2));
@@ -202,6 +202,6 @@ begin
 		end case;
 	end process;
 
-	AN <= Mostrar; --Displays antes ahora se llama AN
+	AN <= not Mostrar; --Displays antes ahora se llama AN
 
 end behavioral;
