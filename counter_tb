@@ -1,0 +1,75 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+
+entity counter_tb is
+ end;
+ 
+architecture tb of counter_tb is
+  component counter is
+       port(
+         clk : in std_logic; --Clock
+         CE : in std_logic; --Chip Enable
+         reset : in std_logic; --Reset
+         code : out std_logic_vector(3 downto 0) --Valor de 0 a 9
+         );
+       end component;
+     
+--Inputs
+	 signal clk, ce, RESET: std_logic;
+     
+--Outputs     
+	 signal CODE: std_logic_vector(3 downto 0);
+     
+          
+ -- Clock period definitions
+ constant CLK_PERIOD: time := 10 ns;
+ constant DELAY: time := 0.1 * CLK_PERIOD;
+  
+ begin
+   uut: counter 
+   port map(
+     CLK=>clk,
+     ce=>CE,
+     reset=>RESET,
+     code=>CODE
+   );
+   
+ --Clock process
+ clk_gen:process
+  begin
+    clk<='0';
+    wait for 0.5* CLK_PERIOD;
+    clk<='1';
+    wait for 0.5* CLK_PERIOD;
+  end process;
+  
+ --Stimulus process
+ RESET<= '0' after 0.25 * CLK_PERIOD, '1' after 0.75 * CLK_PERIOD;
+  
+  stim_proc:process
+   begin 
+   
+   wait for DELAY;
+    
+   --RESET prioridad
+   wait until RESET='0';
+   wait for DELAY;
+  
+   
+   --FUNCIONAMIENTO CONTADOR
+   
+    ce<='0';
+    clk<='0';
+    for i in 0 to 20 loop
+         wait for DELAY; 	
+    	 clk<=not clk;
+         if i=2 then
+         	CE<=not CE;    
+       end if;
+     end loop;
+     
+	wait for DELAY;
+         
+   end process;
+ end architecture;
