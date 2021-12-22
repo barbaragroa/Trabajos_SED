@@ -4,10 +4,11 @@ use IEEE.numeric_std.all;
 
 entity counter is
 	PORT (
-		clk : in std_logic; --Clock
-		CE : in std_logic; --Chip Enable
-        reset : in std_logic; --Reset
-		code : out std_logic_vector(3 downto 0) --Valor de 0 a 9
+		CLK	: in std_logic; --Clock
+		UP	: in std_logic; 
+		DOWN	: in std_logic; 
+       		RESET	: in std_logic; --Reset
+		NUM	: out integer
 	);
 end counter;
 
@@ -20,10 +21,12 @@ begin
           cuenta<=0;
         end if;
 		if rising_edge(clk) then
-			if CE='1' then
+			if UP = '1' then
 				cuenta <= (cuenta+1) mod 10;
+			elsif DOWN = '1' then
+				cuenta <= (cuenta-1) mod 10;
 			end if;
 		end if;		
 	end process;
-	code <= std_logic_vector(to_unsigned(cuenta,4));
+	NUM <= cuenta;
 end behavioral;
